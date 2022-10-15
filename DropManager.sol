@@ -783,9 +783,6 @@ contract PuTProtoStarDrops is Ownable{
 	    	INTupdateBoostManager(updateMGR.getBoostManager);
 	    	INTupdateRewardsPool(updateMGR.getRewardsPool);
 	    	INTupdateTeamPool(updateMGR.getTeamPool);
-		OLDprotoMGR = ProtoManager(0xDb6933B9Ef215BdDD70b9D1fce230Ce03A5a5aE7);
-		dropMGR = dropManager(0x35523fB3A015781039B9a2AA40FeE7aA1bd6d3f9);
-		dropMGR2 = dropManager2(0x1Ca2afA73199a909aE4031593Be9Ef07A2b0Ba14);
 		Managers.push(owner());
 
 
