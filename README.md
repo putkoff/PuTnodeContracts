@@ -1,15 +1,15 @@
-# PutNodes Ecosystem - [Smart Contract Documentation](https://github.com/putkoff/PutNodes/tree/main/documentation)
+# PutNodes Ecosystem - [Smart Contract Documentation](https://github.com/putkoff/PutNodeContracts/tree/main/documentation)
 
 ## Comprehensive Overview
 
-Welcome to the definitive guide for the PutNodes ecosystem - a sophisticated network of interconnected smart contracts engineered for decentralized environments. This [README.md](https://github.com/putkoff/PutNodes/tree/main/README) offers an in-depth exploration of each smart contract within the ecosystem, highlighting their individual functions and the intricate relationships they share. 
+Welcome to the definitive guide for the PutNodes ecosystem - a sophisticated network of interconnected smart contracts engineered for decentralized environments. This [README.md](https://github.com/putkoff/PutNodeContracts/tree/main/README) offers an in-depth exploration of each smart contract within the ecosystem, highlighting their individual functions and the intricate relationships they share. 
 
 ---
 
-### Key Contract: [PutNodesProtoManager](https://github.com/putkoff/PutNodes/tree/main/ProtoManager)
+### Key Contract: [PutNodesProtoManager](https://github.com/putkoff/PutNodeContracts/tree/main/ProtoManager)
 
 #### Core Functionality
-The PutNodesProtoManager contract is the regulatory backbone of the PutNodes ecosystem, integral to its operations. It incorporates various abstract contracts, including [Context](https://github.com/putkoff/PutNodes/tree/main/Context), [boostManager](https://github.com/putkoff/PutNodes/tree/main/boostManager), [feeManager](https://github.com/putkoff/PutNodes/tree/main/feeManager), and [prevProtoStarManager](https://github.com/putkoff/PutNodes/tree/main/prevProtoStarManager). These contracts encompass critical functions, ensuring the ecosystem runs smoothly.
+The PutNodesProtoManager contract is the regulatory backbone of the PutNodes ecosystem, integral to its operations. It incorporates various abstract contracts, including [Context](https://github.com/putkoff/PutNodeContracts/tree/main/Context), [boostManager](https://github.com/putkoff/PutNodeContracts/tree/main/boostManager), [feeManager](https://github.com/putkoff/PutNodeContracts/tree/main/feeManager), and [prevProtoStarManager](https://github.com/putkoff/PutNodeContracts/tree/main/prevProtoStarManager). These contracts encompass critical functions, ensuring the ecosystem runs smoothly.
 
 #### Node Lifecycle and Security
 The contract oversees node naming, creation, and lifecycle management. A unique feature is the tracking of node collapse in a 'deadstars' array, enhancing transparency and reliability. Token transaction facilities are tightly controlled, accessible only by the contract owner, thus fortifying security and operational flexibility. Furthermore, the contract's adaptability to changes within the ecosystem (e.g., treasury, fee manager) highlights its resilience and capacity for growth.
@@ -18,7 +18,7 @@ The contract oversees node naming, creation, and lifecycle management. A unique 
 
 ### In-Depth Look at the PutNodes Ecosystem's Contracts
 
-#### [PutNodesFeeManager Contract](https://github.com/putkoff/PutNodes/tree/main/FeeManager)
+#### [PutNodesFeeManager Contract](https://github.com/putkoff/PutNodeContracts/tree/main/FeeManager)
 ##### Overview
 The PutNodesFeeManager contract orchestrates fee management, dealing with a range of fees from various ecosystem participants. It facilitates the transfer and allocation of fees in AVAX and ERC-20 tokens and emphasizes transparency with features like reconciliation and fee calculations.
 
@@ -28,28 +28,28 @@ This contract plays a vital role in NFT management, adding new protos, altering 
 ##### Ecosystem Role
 The FeeManager smart contract is central in overseeing financial aspects, addressing issues like insolvency and collapse of NFTs. It provides detailed insights into each NFT's status and ensures transparent tracking of various statistics.
 
-#### [PutNodesBoostManager Contract](https://github.com/putkoff/PutNodes/tree/main/BoostManager)
+#### [PutNodesBoostManager Contract](https://github.com/putkoff/PutNodeContracts/tree/main/BoostManager)
 ##### Structure
 The PutNodesBoostManager introduces a 'boost' functionality, accelerating dividend payouts. It is structured with internal data types like PROTOstars and DEADStars and leverages multiple contracts and libraries for functionality inheritance.
 
 ##### Security and Interaction
 Security is paramount, with access restrictions like 'managerOnly' and 'onlyGuard'. This contract integrates seamlessly with other ecosystem components, enhancing the holistic nature of the smart contracts.
 
-#### [nft_stake Contract](https://github.com/putkoff/PutNodes/tree/main/nft_stake)
+#### [nft_stake Contract](https://github.com/putkoff/PutNodeContracts/tree/main/nft_stake)
 ##### Features
 The nft_stake contract is crucial for the staking mechanism in the ecosystem. It allows for staking at three levels, with specific mapping data structures for each.
 
 ##### Security Focus
-Operations such as contract address updates are exclusively owner-executable, enhancing security. The contract also implements the [ERC1155Receiver](https://github.com/putkoff/PutNodes/tree/main/ERC1155Receiver) function for secure token transfers.
+Operations such as contract address updates are exclusively owner-executable, enhancing security. The contract also implements the [ERC1155Receiver](https://github.com/putkoff/PutNodeContracts/tree/main/ERC1155Receiver) function for secure token transfers.
 
-#### [PutNodesNftMint Contract](https://github.com/putkoff/PutNodes/tree/main/NftMint)
+#### [PutNodesNftMint Contract](https://github.com/putkoff/PutNodeContracts/tree/main/NftMint)
 ##### Contract Mechanics
 This contract is pivotal in NFT lifecycle management, handling minting and distribution. It sets essential parameters like NFT address, costs, and supply limits.
 
 ##### Security Aspects
 Key functions, including manager updates and fund transfers, are owner-restricted, ensuring controlled access to critical operations.
 
-#### [PutNodes Overseer Contract](https://github.com/putkoff/PutNodes/tree/main/Overseer)
+#### [PutNodes Overseer Contract](https://github.com/putkoff/PutNodeContracts/tree/main/Overseer)
 ##### Functionality
 The Overseer Contract acts as an oracle and quality assurance system, not directly interacting with the core ecosystem but playing a vital role in verifying various components. 
 
@@ -60,13 +60,13 @@ It inherits from 'Ownable' and 'Authorizable' contracts for controlled access an
 
 ### Mathematical and Utility Libraries in the PutNodes Ecosystem
 
-#### [PutNodesMath Library](https://github.com/putkoff/PutNodes/tree/main/MathLibrary)
+#### [PutNodesMath Library](https://github.com/putkoff/PutNodeContracts/tree/main/MathLibrary)
 Ensures safe mathematical operations, preventing arithmetic overflows or underflows. It leverages 'unchecked' blocks and 'SafeMath' library functions for reliable and efficient calculations.
 
-#### [PutMath Library](https://github.com/putkoff/PutNodes/tree/main/PutMath)
+#### [PutMath Library](https://github.com/putkoff/PutNodeContracts/tree/main/PutMath)
 Provides core mathematical and list management utilities. It is categorized into List Check, Mathematical Functions, and Utility Functions, each serving specific ecosystem needs.
 
-#### [boostLib](https://github.com/putkoff/PutNodes/tree/main/boostLib)
+#### [boostLib](https://github.com/putkoff/PutNodeContracts/tree/main/boostLib)
 Central to the 'Boost' feature, boostLib uses SafeMath for secure operations. It includes functions like 'calcReward' and 'doPercentage' for dynamic reward computations and percentage calculations.
 
 ---
@@ -77,7 +77,7 @@ The PutNodes ecosystem represents a meticulously crafted network of smart contra
 
 ---
 
-## [License](https://github.com/putkoff/PutNodes/tree/main/LICENSE)
+## [License](https://github.com/putkoff/PutNodeContracts/tree/main/LICENSE)
 
-The PutNodes ecosystem is licensed under [MIT License](https://github.com/putkoff/PutNodes/tree/main/LICENSE).
+The PutNodes ecosystem is licensed under [MIT License](https://github.com/putkoff/PutNodeContracts/tree/main/LICENSE).
 
