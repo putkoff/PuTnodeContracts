@@ -1,85 +1,76 @@
-# PuTnodes Ecosystem - Smart Contract Documentation
+# PutNodes Ecosystem - Smart Contract Documentation
 
-## Overview
-The PuTnodes ecosystem is a robust framework of interconnected smart contracts designed to operate within a decentralized network. This document provides an exhaustive overview of each smart contract involved in the PuTnodes ecosystem, detailing their functionalities and interrelationships.
+## Comprehensive Overview
 
----
-
-### 1. PuTnodesFrontEnd
-**Main Contract**
-- **Functionality**: Serves as the central hub for all interactions and logic execution within the PuTnodes ecosystem.
+Welcome to the definitive guide for the PutNodes ecosystem - a sophisticated network of interconnected smart contracts engineered for decentralized environments. This README.md offers an in-depth exploration of each smart contract within the ecosystem, highlighting their individual functions and the intricate relationships they share. 
 
 ---
 
-### 2. DropManager.sol and Update DropManager.sol
-**Drop Management Contracts**
-- **Purpose**: Manage and execute 'drops' (rewards) within the ecosystem.
-- **Functions**: Scheduling, allocation, and operational tasks related to node rewards.
+### Key Contract: PutNodesProtoManager
+
+#### Core Functionality
+The PutNodesProtoManager contract is the regulatory backbone of the PutNodes ecosystem, integral to its operations. It incorporates various abstract contracts, including Context, boostManager, feeManager, and prevProtoStarManager. These contracts encompass critical functions, ensuring the ecosystem runs smoothly.
+
+#### Node Lifecycle and Security
+The contract oversees node naming, creation, and lifecycle management. A unique feature is the tracking of node collapse in a 'deadstars' array, enhancing transparency and reliability. Token transaction facilities are tightly controlled, accessible only by the contract owner, thus fortifying security and operational flexibility. Furthermore, the contract's adaptability to changes within the ecosystem (e.g., treasury, fee manager) highlights its resilience and capacity for growth.
 
 ---
 
-### 3. PuTnodesBoostManager.sol
-**Node Boost Management Contract**
-- **Responsibilities**: Manages node boosts based on tiers.
-- **Key Features**: Defines boost amounts for different node tiers.
+### In-Depth Look at the PutNodes Ecosystem's Contracts
+
+#### PutNodesFeeManager Contract
+##### Overview
+The PutNodesFeeManager contract orchestrates fee management, dealing with a range of fees from various ecosystem participants. It facilitates the transfer and allocation of fees in AVAX and ERC-20 tokens and emphasizes transparency with features like reconciliation and fee calculations.
+
+##### Functionality and Security
+This contract plays a vital role in NFT management, adding new protos, altering existing data, and overseeing their lifecycles. Its security is bolstered by restricted operations, accessible only to specific addresses like 'owner,' 'manager,' or 'guard.'
+
+##### Ecosystem Role
+The FeeManager smart contract is central in overseeing financial aspects, addressing issues like insolvency and collapse of NFTs. It provides detailed insights into each NFT's status and ensures transparent tracking of various statistics.
+
+#### PutNodesBoostManager Contract
+##### Structure
+The PutNodesBoostManager introduces a 'boost' functionality, accelerating dividend payouts. It is structured with internal data types like PROTOstars and DEADStars and leverages multiple contracts and libraries for functionality inheritance.
+
+##### Security and Interaction
+Security is paramount, with access restrictions like 'managerOnly' and 'onlyGuard'. This contract integrates seamlessly with other ecosystem components, enhancing the holistic nature of the smart contracts.
+
+#### nft_stake Contract
+##### Features
+The nft_stake contract is crucial for the staking mechanism in the ecosystem. It allows for staking at three levels, with specific mapping data structures for each.
+
+##### Security Focus
+Operations such as contract address updates are exclusively owner-executable, enhancing security. The contract also implements the ERC1155Receiver function for secure token transfers.
+
+#### PutNodesNftMint Contract
+##### Contract Mechanics
+This contract is pivotal in NFT lifecycle management, handling minting and distribution. It sets essential parameters like NFT address, costs, and supply limits.
+
+##### Security Aspects
+Key functions, including manager updates and fund transfers, are owner-restricted, ensuring controlled access to critical operations.
+
+#### PutNodes Overseer Contract
+##### Functionality
+The Overseer Contract acts as an oracle and quality assurance system, not directly interacting with the core ecosystem but playing a vital role in verifying various components. 
+
+##### Security and Adaptability
+It inherits from 'Ownable' and 'Authorizable' contracts for controlled access and manages essential ecosystem components like the treasury address and rewards wallet.
 
 ---
 
-### 4. PuTnodesFeeManager.sol
-**Transaction Fee Management Contract**
-- **Function**: Handles calculation and subtraction of transaction fees within the ecosystem.
+### Mathematical and Utility Libraries in the PutNodes Ecosystem
 
----
+#### PutNodesMath Library
+Ensures safe mathematical operations, preventing arithmetic overflows or underflows. It leverages 'unchecked' blocks and 'SafeMath' library functions for reliable and efficient calculations.
 
-### 5. PuTnodesManager.sol
-**Node Management Contract**
-- **Functionality**: Oversees the creation, updating, and removal of nodes in the ecosystem.
+#### PutMath Library
+Provides core mathematical and list management utilities. It is categorized into List Check, Mathematical Functions, and Utility Functions, each serving specific ecosystem needs.
 
----
-
-### 6. PuTnodesMath.sol and PuTnodesMathLib.sol
-**Utility Contracts**
-- **Purpose**: Provide mathematical functions and operations for safer execution in other contracts.
-
----
-
-### 7. PuTnodesNFTStake.sol
-**NFT Staking Contract**
-- **Responsibilities**: Manages staking and releasing of NFTs within the ecosystem.
-
----
-
-### 8. PuTnodesUpdateManager.sol
-**Ecosystem State Management Contract**
-- **Role**: Ensures stability and correctness of operations across the ecosystem.
-
----
-
-### 9. PuTprotoStarManager
-**ProtoStar Lifecycle Management Contract**
-- **Main Functions**:
-  - `addProto(...)`: Creates new protoStars.
-  - `collapseProto(...)`: Collapses existing protoStars.
-  - `protoAccountData(...)`: Provides data on individual protoStars.
-  - `getDeadStarsData(...)`: Retrieves data on deadStars.
-  - `updatePuTToken(...)` and other update functions: Keeps addresses within the contract current.
-
----
-
-### 10. Detailed Contract Functionality
-**DropManager Specific Functions**
-- **Key Operations**: Managing pre-release rewards, claim mechanisms, and updating system components.
-- **Functions Include**: `getPendingRewards`, `claimRewards`, `updateDailyRewards`, and more.
-
----
-
-### Additional Contracts and Libraries
-**SafeMath, PuTLib, boostLib**
-- **SafeMath**: Ensures safe mathematical operations, preventing overflows/underflows.
-- **PuTLib**: Offers utility functions for the ecosystem.
-- **boostLib**: Related to reward and fee calculations.
+#### boostLib
+Central to the 'Boost' feature, boostLib uses SafeMath for secure operations. It includes functions like 'calcReward' and 'doPercentage' for dynamic reward computations and percentage calculations.
 
 ---
 
 ### Conclusion
-This README aims to provide a comprehensive guide to the smart contracts within the PuTnodes ecosystem. Each contract plays a pivotal role in maintaining the functionality and stability of the network. For more detailed implementation and usage, refer to the specific contract documentation.
+
+The PutNodes ecosystem represents a meticulously crafted network of smart contracts, each contributing uniquely to the overall functionality and security of the system. Regular audits and quality checks are recommended to ensure ongoing reliability and efficiency. This comprehensive documentation aims to provide a clear understanding of each component's role, functionality, and the synergy that binds them into a cohesive and robust ecosystem.
