@@ -1,0 +1,150 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 2px solid var(--wh-green-70);
+}
+
+.account {
+  border: 2px solid var(--wh-steel-30);
+  cursor: pointer;
+  background-color: var(--wh-neutral-80);
+  &:hover {
+    border: 2px solid var(--wh-steel-10);
+  }
+  padding: 6px 12px;
+  gap: 8px;
+  border-radius: 8px;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.itemWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.network {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: var(--wh-neutral-80);
+  min-width: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wh-red-60) !important;
+  border: 2px solid var(--wh-neutral-80);
+  font-size: 16px;
+}
+
+.logo {
+  width: 48px;
+  height: 63.5px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.claim {
+  display: flex;
+  background-color: var(--wh-neutral-70) !important;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--wh-neutral-60) !important;
+  }
+  & h6 {
+    font-weight: 500;
+    font-size: 16px !important;
+  }
+
+  & svg {
+    color: var(--wh-yellow-20);
+  }
+}
+
+.popper {
+  z-index: 2 !important;
+}
+
+.infoTable {
+  box-shadow: 0 0 5px;
+  min-width: 512px;
+  background-color: var(--wh-neutral-80);
+  padding: 12px 24px;
+  border-radius: 8px;
+  min-height: 212px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &.fixed {
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+
+  justify-content: flex-start;
+
+  & p {
+    font-size: 20px !important;
+  }
+}
+
+.controller {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+
+  & .box {
+    display: flex;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    height: 48px;
+    width: 48px;
+    font-size: 24px;
+    border: 1px solid white;
+  }
+}
+.icon {
+  padding: 0.3rem 0.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  &:hover {
+    background-color: var(--wh-neutral-70);
+  }
+  color: white;
+}
+
+.rowWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.rows {
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
