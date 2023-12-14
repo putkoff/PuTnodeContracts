@@ -1,0 +1,19 @@
+PutNodes Ecosystem - Smart Contract Documentation
+
+Overview
+
+The PutNodes ecosystem is a comprehensive framework of interconnected smart contracts built for decentralized networks. This document offers an exhaustive insight into each smart contract within the PutNodes ecosystem, elucidating their functionalities and relationships.
+
+The data below represents the principal contract at the forefront of the ecosystem. We will present an extensive description of its functionality and assess the integrity of its code.
+
+Contract Description
+
+The PutNodesProtoManager smart contract plays a pivotal role in the PutNodes Ecosystem. This contract serves as the cornerstone for regulatory functions governing the ecosystem's operations. It comprises several abstract contracts, including Context, boostManager, feeManager, and prevProtoStarManager, all of which hold functions critical to the ecosystem's operation.
+
+This contract also oversees parameters for node naming and the creation of new nodes while diligently tracking their life cycles, encompassing creation, claim times, and life decrease. When a node undergoes a collapse, it is meticulously recorded in a distinct array named "deadstars," with comprehensive explanations for its altered status. This feature enhances transparency and ensures a comprehensive record of all node states, benefiting every user.
+
+Additionally, the contract facilitates token transactions, permitting the transfer of tokens in and out of the contract. Notably, this transactional capability can only be executed by the contract owner, ensuring both operational security and flexibility in fund and token management.
+
+One of the contract's remarkable features is its adaptability to core component changes within the PutNodes ecosystem, such as modifications to the treasury, fee manager, or boosting manager, among others. This adaptability reinforces the system's capacity for upgrades and evolution.
+
+In essence, the PutNodesProtoManager contract stands as a cornerstone of the PutNodes Ecosystem, managing essential functions, providing transparency, and demonstrating a high degree of adaptability, all contributing to the ecosystem's robustness and long-term viability.

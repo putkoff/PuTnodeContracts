@@ -1,0 +1,21 @@
+Overview of the PutNodes NFT Staking Contract
+
+The PutNodes NFT Staking Contract, referred to as 'staking_contract' in the code, oversees the staking method for the NFTs (Non-Fungible Tokens) in the PutNodes ecosystem. As a crucial part of the system's backbone, it tracks user participation, contributing to the ecosystem's viability concerning rewards and timescales.
+
+Contract Structure
+
+The contract design is comprehensive, providing clear definitions of each pool and user information. Among its critical features are the management of LP (Liquidity Provider) tokens, reward debts, and allocation points assigned to each pool, including the precise tracking of when Proto (reward currency of the system) distribution last occurred.
+
+Token Interaction
+
+The 'staking_contract' manages a selection of tokens, including 'Proto', 'lp tokens', and others. The poolInfo and userInfo mappings imply that the contract is strictly associated with a user's wallet and pool. Appropriate measures are in place to prevent pool duplication, ensuring each LP token pool is unique, consequently mitigating interference risks.
+
+Staking Mechanism and Rewards
+
+The 'staking_contract' uses a mechanism that allows users to deposit LP tokens to individual pools and withdraw them. Each deposit or withdrawal triggers a pool update, which recalculates the amount of Proto generated for rewards. An 'emergencyWithdraw' function is also in place for unplanned situations, allowing users to withdraw without considering pending rewards.
+
+Security and Governance
+
+The contract operator, who has the authority to modify the contract, is strictly controlled by the 'onlyOperator' modifier. This restriction underlines the contract's emphasis on security. Additionally, the contract includes a 'governanceRecoverUnsupported' function that can recover inadmissible tokens sent to the contract. 
+
+In summary, the PutNodes NFT Staking Contract manages user participation and rewards in the PutNodes ecosystem. Moreover, it provides transparency and security through robust control mechanisms, contributing significantly to the system's sustainability.
