@@ -17,7 +17,7 @@ The contract oversees node naming, creation, and lifecycle management. A unique 
 
 ### In-Depth Look at the PutNodes Ecosystem's Contracts
 
-#### [PutNodesFeeManager Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/FeeManager)
+#### [PutNodesFeeManager Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/FeeManager/PutNodesFeeManager.sol)
 ##### Overview
 The PutNodesFeeManager contract orchestrates fee management, dealing with a range of fees from various ecosystem participants. It facilitates the transfer and allocation of fees in AVAX and ERC-20 tokens and emphasizes transparency with features like reconciliation and fee calculations.
 
@@ -27,28 +27,28 @@ This contract plays a vital role in NFT management, adding new protos, altering 
 ##### Ecosystem Role
 The FeeManager smart contract is central in overseeing financial aspects, addressing issues like insolvency and collapse of NFTs. It provides detailed insights into each NFT's status and ensures transparent tracking of various statistics.
 
-#### [PutNodesBoostManager Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/BoostManager)
+#### [PutNodesBoostManager Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/BoostManager/PutNodesBoostManager.sol)
 ##### Structure
 The PutNodesBoostManager introduces a 'boost' functionality, accelerating dividend payouts. It is structured with internal data types like PROTOstars and DEADStars and leverages multiple contracts and libraries for functionality inheritance.
 
 ##### Security and Interaction
 Security is paramount, with access restrictions like 'managerOnly' and 'onlyGuard'. This contract integrates seamlessly with other ecosystem components, enhancing the holistic nature of the smart contracts.
 
-#### [nft_stake Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/NftStakingContract)
+#### [nft_stake Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/NftStakingContract/PutNodesNftStakingContract.sol)
 ##### Features
 The nft_stake contract is crucial for the staking mechanism in the ecosystem. It allows for staking at three levels, with specific mapping data structures for each.
 
 ##### Security Focus
 Operations such as contract address updates are exclusively owner-executable, enhancing security. The contract also implements the ERC1155Receiver function for secure token transfers.
 
-#### [PutNodesNftMint Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/NFTMint)
+#### [PutNodesNftMint Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/NFTMint/PutNodesNFTMint.sol)
 ##### Contract Mechanics
 This contract is pivotal in NFT lifecycle management, handling minting and distribution. It sets essential parameters like NFT address, costs, and supply limits.
 
 ##### Security Aspects
 Key functions, including manager updates and fund transfers, are owner-restricted, ensuring controlled access to critical operations.
 
-#### [PutNodes Overseer Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/Overseer)
+#### [PutNodes Overseer Contract](https://github.com/putkoff/PuTnodeContracts/tree/main/Overseer/PutNodesOverseer.sol)
 ##### Functionality
 The Overseer Contract acts as an oracle and quality assurance system, not directly interacting with the core ecosystem but playing a vital role in verifying various components. 
 
@@ -79,4 +79,3 @@ The PutNodes ecosystem represents a meticulously crafted network of smart contra
 ## [License](https://github.com/putkoff/PutNodeContracts/tree/main/LICENSE)
 
 The PutNodes ecosystem is licensed under [MIT License](https://github.com/putkoff/PuTnodeContracts/blob/main/LICENSE).
-
