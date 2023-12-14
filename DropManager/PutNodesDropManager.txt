@@ -1,0 +1,9 @@
+The NeFiDropManager contract lies within the PutNodes Ecosystem, formulated for overseeing pre-sales and handling external operations. DROPS and TRANSFERS objects hold useful information, like claimed or dropped tokens, and transfer details, respectively. 
+
+Recursively nested within this contract, there are abstract contracts like feeManager, ProtoManager, and dropManager that incept their own respective functionalities. feeManager handles the payment and transfer of fees, while ProtoManager governs the addition of a new Proto. dropManager, on the other hand, keeps track of tokens that are dropped. 
+
+The contract also provides multiple payment methods (createProtoFeeTok, createProtoAvax) for a user to pay their fees. It employs rigorous checking functions (checkProtoCreate) for allowance (checkAllowance) that scrutinizes if the user has enough tokens to pay fees, and maintains a thorough record of paid fees (getFeesPaid), total payable amount (getTotalPayable), and remaining dues (getRemaining). 
+
+Furthermore, the contract also commends contingency planning with the function (sendAllTokenOut) that allows the owner to transfer tokens to another address during unexpected events. 
+
+Evaluating the contract code, the integration of necessary checks and layers of abstract contracts enhance the security of transactions. However, it is essential to secure user interactions with the contract to ensure proper understanding and use of functionalities.
