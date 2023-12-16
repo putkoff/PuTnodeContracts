@@ -145,9 +145,8 @@ abstract contract ERC1155Receiver is ERC165, IERC1155Receiver {
     }
 }
 pragma solidity ^0.8.7;
-contract nft_stake is Ownable {
+contract PutNodesNFTstake is Ownable {
     IERC1155 public parentNFT;
-    address _NFTcontract = 0x0809174aBA0328E3663476Df3c2E7e0711E40161;
     address public NFTcontract;
     uint256 public time = block.timestamp;
     struct Stake_1 {
@@ -173,7 +172,7 @@ contract nft_stake is Ownable {
     mapping(address => uint256[]) public stakingTime_2;
     mapping(address => uint256[]) public stakingTime_3; 
     address[] public accounts;
-    constructor() {
+    constructor(address _NFTcontract) {
     NFTcontract = _NFTcontract;
     }
     function isStaked(address _account) external view returns(bool){
