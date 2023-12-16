@@ -83,52 +83,6 @@ library SafeMath {
         }
     }
 }
-library nebuLib {
-	using SafeMath for uint256;
-		function getDecimals(uint256 _x) internal view returns(uint){
-			uint i = 0;
-			while(_x != 0){
-				_x = _x.div(10);
-				i++;
-			}
-			return i;
-		}
-		function elimZero(uint256 _y) internal view returns(uint256){
-			uint i = getDecimals(_y);
-			uint dec = i;
-			uint refDec = i;
-			uint _n = 0;
-			uint k = 0;
-			while(_n ==0 && refDec!=0){
-				refDec -= 1;
-				_n = _y.div(10**refDec);
-				k +=1;
-			}
-			return k;
-		}
-		function doPrecision(uint256 _x,uint256 perc) internal view returns(uint256[3] memory){
-			uint256 exp = getDecimals(_x);
-			uint256 percDec = getDecimals(perc);
-			uint denom =  20-percDec;
-			uint trunc = elimZero(perc);
-			uint[3] memory range = [exp,denom,trunc];
-			uint256 _y = _x.mul(10**range[1]);
-			uint256 _z = _y.mul(perc);
-			return [range[0],_z.div(10**percDec),_z];
-		}
-		
-		function doPercentage(uint256 x, uint256 y) internal pure returns (uint256) {
-		    	uint256 Zero = 0;
-		    	uint256 xx = Zero;
-		   	if (y == Zero){
-		   		return x;
-		   	}else if(x == Zero){
-		   		return Zero;
-		   	}
-		   	xx = x.div((10000)/(y)).mul(100);
-		    	return xx;
-		    }
-	}
 library boostLib {
     using SafeMath for uint256;
     function boostPerDay(uint256 _dailyRewardsPerc) internal pure returns(uint256){
@@ -182,11 +136,22 @@ library boostLib {
     	return false;
     }
 }
-library nebuLib {
-	
+library PutLib {
+	using SafeMath for uint256;
+	function doPercentage(uint256 x, uint256 y) internal pure returns (uint256) {
+	    	uint256 Zero = 0;
+	    	uint256 xx = Zero;
+	   	if (y == Zero){
+	   		return x;
+	   	}else if(x == Zero){
+	   		return Zero;
+	   	}
+	   	xx = x.div((10000)/(y)).mul(100);
+	    	return xx;
+	    }
 }
 // Sources flattened with hardhat v2.3.0 https://hardhat.org
-// File @uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol@v1.0.1
+// File @uniswap/v2-core/contracts/interfaces/[email protected]
 pragma solidity >=0.5.0;
 interface IUniswapV2Pair {
     event Approval(address indexed owner, address indexed spender, uint value);
@@ -336,18 +301,6 @@ contract math is
   Authorizable
 {
   using SafeMath for uint;
-       
-    struct NFTSTATS {
-    	uint256 redGiantElapsed;
-    	uint256 WhiteDwarfElapsed;
-    	uint256 SuperNovaElapsed;
-    	uint256 redGiantLastClaim;
-    	uint256 WhiteDwarfLastClaim;
-    	uint256 SuperNovaLastClaim;
-    	uint256 unclaimedBoosted;
-    	uint256 currentNFT;
-    }
-    
    struct GREENSamt {
         uint256 amount;
     }
@@ -366,7 +319,6 @@ contract math is
   address main_add;
   address stable_add;
   address public _stake;
-  address Guard;
   uint256 public dailyRewardsPerc;
   uint256 public timeStep;
   uint256 public rewardsPerMin;
@@ -377,10 +329,8 @@ contract math is
   uint256[3] public nftCashoutPercs = [Zero,5,10];
   uint256[3] public boostRewardsPerMin = [Zero,Zero,Zero];
   nft_stake public NFT_CONT;
-  
   bool stableOn = true;
   uint256[] public boostMultiplier;
-  modifier onlyGuard() {require(Guard == _msgSender() || _msgSender() == owner(), "NOT_GUARD");_;}
   constructor(address[] memory swaps,uint256[] memory _boosts,uint256[3] memory _nftCost,uint256[] memory _vars,uint256[] memory _fees,uint256[] memory _cashoutRed){
 	  swap_add = swaps[0];
 	  stable_swap_add = swaps[1];
@@ -401,7 +351,7 @@ contract math is
 	  cashoutFee = _fees[0];
 	  for(uint i=0;i<3;i++){
 	  	boostRewardsPerMin[i] =boostLib.calcReward(rewardsPerMin,timeStep,time,lastClaimTime,boostMultiplier[i]);
-	  	nftCashoutPercs[i] = nebuLib.doPercentage(cashoutFee,_cashoutRed[i]);
+	  	nftCashoutPercs[i] = PutLib.doPercentage(cashoutFee,_cashoutRed[i]);
 	  }
 	  
   }
@@ -470,68 +420,6 @@ contract math is
     return 0;
     // return amount of token0 needed to buy token1
    }
-   function updateNftStats(address[] memory _accounts, uint[] memory _x,uint256[] memory redGiantElapseds,uint256[] memory WhiteDwarfElapseds,uint256[] memory SuperNovaElapseds,uint256[] memory redGiantLastClaims,uint256[] memory WhiteDwarfLastClaims,uint256[] memory SuperNovaLastClaims,uint256[] memory unclaimedBoosteds,uint256[] memory currentNFT) external onlyGuard{
-    	for(uint i=0;i<_accounts.length;i++){
-    		uint256 x = _x[i];
-    		address _account = _accounts[i];
-    		uint256[8] memory varList = [redGiantElapseds[i],WhiteDwarfElapseds[i],SuperNovaElapseds[i],redGiantLastClaims[i],WhiteDwarfLastClaims[i],SuperNovaLastClaims[i],unclaimedBoosteds[i],currentNFT[i]];
-		nftstats[_account][x].redGiantElapsed = varList[0];
-	    	nftstats[_account][x].WhiteDwarfElapsed = varList[1];
-	    	nftstats[_account][x].SuperNovaElapsed = varList[2];
-	    	nftstats[_account][x].redGiantLastClaim = varList[3];
-	    	nftstats[_account][x].WhiteDwarfLastClaim = varList[4];
-	    	nftstats[_account][x].SuperNovaLastClaim = varList[5];
-	    	nftstats[_account][x].unclaimedBoosted = varList[6];
-	    	nftstats[_account][x].currentNFT = varList[7];
-    	
-    	}
-    }
- function getNftAmounts(address _account) internal returns(uint256[3] memory,uint256){
-    	uint256[3] memory ls = [Zero,Zero,Zero];
-    	uint256 count = Zero;
-    	uint256 total = Zero;
-    	for(uint i=0;i<3;i++){
-    		ls[i] = over.getNftAmount(_account,count);
-    		total += ls[i];
-    		count += One;
-    	}
-    	return (ls,total);
-    	
-    }
- function getNftApply(address _account,uint256 _x,uint256 _time) internal returns(bool,uint256){
-    	(uint256[3] memory ls,uint256 total) = over.getNftAmounts(_account);
-    	uint256[3] memory lsCount = [Zero,Zero,Zero];
-    	uint256 _id = Zero;
-    	uint256 _k = _x.add(One);
-    	uint256 Count;
-    	if(total > 0 && total.mul(5) >= _k){
-    		for(uint i=0;i<total;i++){
-    			while(lsCount[_id] == ls[_id]){
-    				_id +=1;
-    			}
-    			if(_k <= Count.mul(5)){
-    				return (true,_id);
-    			}
-    			ls[_id] += One;
-    		}
-    	}
-    	return (false,Zero);
-    }
-    function updateNftApply(address _account,uint256 _x,uint256 _time) internal{
-    	(bool _tell,uint256 _id) = getNftApply(_account,_x,_time);
-    	if(_tell == true){
-    		nftstats[_account][_x].currentNft = _id;
-    	}
-    }
-    function getNftBoostInfo(address _account,uint256 _x) internal returns(uint256,uint256,uint256){
-    	return (over.getNftTimes(_account,_id,ls[_id]),over.getBoostPerMin(_id),over.getMultiplier(_id));
-    }
-        function getNftStats(address _account,uint256 x) external returns(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256){
-    	return (nftstats[_account][x].redGiantElapsed,nftstats[_account][x].WhiteDwarfElapsed,nftstats[_account][x].SuperNovaElapsed,nftstats[_account][x].redGiantLastClaim ,nftstats[_account][x].WhiteDwarfLastClaim,nftstats[_account][x].SuperNovaLastClaim,nftstats[_account][x].unclaimedBoosted,nftstats[_account][x].currentNFT);
-    }
- function doPrecision(uint256 _x,uint256 perc) external view returns(uint256,uint256,uint256){
- 	return nebuLib.doPrecision(_x,perc);
- }
  function getMultiplier(uint256 _x) external returns(uint256){
  	return boostMultiplier[_x];
  }
@@ -602,9 +490,6 @@ contract math is
   function updateStableSwapAddress(address newVal) external onlyOwner {
         stable_swap_add = newVal; //stable swap address
     }
-  function updateGuard(address _account) external onlyOwner {
-       	Guard = _account;
-    }
   function updateVal(uint256 newVal) external onlyOwner {
         val = newVal; //min amount to swap
     }
@@ -614,27 +499,5 @@ contract math is
 
   function updateLowPerc(uint256 newVal) external onlyOwner {
         low_perc = newVal; //low_percentage low_perc.div(100)
-    }
-  function transferOut(address payable _to,uint256 _amount) payable external  onlyOwner(){
-	_to.transfer(_amount);
-  }
- function sendTokenOut(address _to,address _token, uint256 _amount) external onlyOwner(){
-	IERC20 newtok = IERC20(_token);
-	feeTok.transferFrom(address(this), _to, _amount);
-  }
- function transferAllOut(address payable _to,uint256 _amount) payable external onlyOwner(){
-	_to.transfer(address(this).balance);
-  }
- function sendAllTokenOut(address payable _to,address _token) external onlyOwner(){
-	IERC20 newtok = IERC20(_token);
-	feeTok.transferFrom(address(this), _to, feeTok.balanceOf(address(this)));
-  }
- function updateOverseer(address newVal) external onlyOwner {
-    	address _overseer = newVal;
-    	over = overseer(_overseer);
-  }
- receive() external payable {
-        payable(msg.sender).transfer(msg.value);
-  }
- fallback() external payable {}
+    }    
 }
