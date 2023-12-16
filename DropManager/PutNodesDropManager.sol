@@ -120,7 +120,7 @@ abstract contract Ownable is Context {
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
-library PutNodesLib {
+library PutLib {
 	using SafeMath for uint256;
 		function addressInList(address[] memory _list, address _account) internal pure returns (bool){
 			for(uint i=0;i<_list.length;i++){
@@ -689,7 +689,7 @@ abstract contract overseer is Context {
 	 function getNftPrice(uint _val) external virtual view returns(uint256);
 	 function getEm() external virtual view returns (uint256); 
 }
-contract PutNodesDropManager is Ownable{
+contract DropManager is Ownable{
 	using SafeMath for uint256;
 	struct DROPS{
 		uint256 dropped;
@@ -730,7 +730,7 @@ contract PutNodesDropManager is Ownable{
 	feeManager public feeMGR;
 	overseer public over;
 	IERC20 public feeTok;
-	modifier managerOnly() {require(PutNodesLib.addressInList(Managers,msg.sender)== true); _;}
+	modifier managerOnly() {require(PutLib.addressInList(Managers,msg.sender)== true); _;}
 	constructor(address[] memory addresses){
 		feeMGR = feeManager(addresses[0]);
 		over = overseer(addresses[1]);
@@ -908,7 +908,7 @@ contract PutNodesDropManager is Ownable{
 		return false;
 	}
 	function getInList(address _account) internal{
-		if(PutNodesLib.addressInList(protoOwners,_account) ==false){
+		if(PutLib.addressInList(protoOwners,_account) ==false){
 			protoOwners.push(_account);
 		}
 	}
@@ -1039,14 +1039,14 @@ contract PutNodesDropManager is Ownable{
 				airdrop[_account].fees -= _x[k];
 			}
 		}
-		if(PutNodesLib.addressInList(transfered,_account) == false){
+		if(PutLib.addressInList(transfered,_account) == false){
 			protoOwners.push(_account);
 			transfered.push(_account);
 		}
 	}
 	function removeManagers(address newVal) external managerOnly() {
-    		if(PutNodesLib.addressInList(Managers,newVal) ==true){
-    			uint _i = PutNodesLib.isInList(Managers,newVal);
+    		if(PutLib.addressInList(Managers,newVal) ==true){
+    			uint _i = PutLib.isInList(Managers,newVal);
     			uint len = Managers.length-1;
     			Managers.push();
     			for(uint i=_i;i<len;i++){
@@ -1089,7 +1089,7 @@ contract PutNodesDropManager is Ownable{
 		feeTok.transferFrom(address(this), _to, feeTok.balanceOf(address(this)));
 	}
 	function updateManagers(address newVal) external  onlyOwner{
-    		if(PutNodesLib.addressInList(Managers,newVal) ==false){
+    		if(PutLib.addressInList(Managers,newVal) ==false){
         		Managers.push(newVal); //token swap address
         	}
     	}
