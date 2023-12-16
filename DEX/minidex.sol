@@ -446,7 +446,7 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
 }
 
 
-contract minidex is Context, IERC20, Ownable {
+contract MiniDex is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -464,8 +464,8 @@ contract minidex is Context, IERC20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = "minidex";
-    string private _symbol = "MDX";
+    string private _name = "MiniDex";
+    string private _symbol = "MDex";
     uint8 private _decimals = 9;
     
     uint256 public _taxFee = 3;
@@ -499,10 +499,8 @@ contract minidex is Context, IERC20, Ownable {
     
     constructor () public {
         _rOwned[_msgSender()] = _rTotal;
-        //0xD99D1c33F9fC3444f8101754aBC46c52416550D1 testnet router
-        //IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0xD99D1c33F9fC3444f8101754aBC46c52416550D1);
-        //0x10ED43C718714eb63d5aA57B78B54704E256024E mainnet router
-        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0xEa13649E218A5AAF6F2196FC0c20314Ffeda1d16);
+        
+        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x2c3f6397A796249E4B45F253CCad7C88335592E5);
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
 
