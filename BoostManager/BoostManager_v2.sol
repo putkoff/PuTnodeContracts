@@ -145,7 +145,7 @@ library boostLib {
     	return false;
     }
 }
-library NeFiLib {
+library PutLib {
 	using SafeMath for uint256;
 		function addressInList(address[] memory _list, address _account) internal pure returns (bool){
 			for(uint i=0;i<_list.length;i++){
@@ -671,12 +671,23 @@ abstract contract Ownable is Context {
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
-abstract contract NFTStake is Context {
-    function isStaked(address _account) external view virtual returns(bool);
-    function isStakedSpec(address _account) external view virtual returns(uint256[3] memory);
-    function idAmount(address _account,uint256 _id) external virtual returns(uint256);
-    function INTidAmount(address _account,uint256 _id) internal virtual returns(uint256);
-    function getTimes(address _account,uint256 _id,uint256 k) external virtual returns(uint256);
+
+abstract contract PutUpdateManager is Context{
+	function getTreasury() external virtual returns(address);
+	function getBoostManager() external virtual returns(address);
+	function getDropManager() external virtual returns(address);
+	function getProtoManager() external virtual returns(address);
+	function getFeeManager() external virtual returns(address);
+	function getOverseer() external virtual returns(address);
+	function getTeamPool() external virtual returns(address);
+	function getRewardsPool() external virtual returns(address);
+}
+abstract contract protoManager is Context {
+    function addProto(address _account, string memory _name) external virtual;
+    function getProtoAccountsLength() external virtual view returns(uint256);
+    function getProtoAddress(uint256 _x) external virtual view returns(address);
+    function getProtoStarsLength(address _account) external virtual view returns(uint256);
+    function protoAccountData(address _account, uint256 _x) external virtual returns(string memory,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256);
 }
 abstract contract feeManager is Context {
     function getImploded(address _account,string memory _name) external virtual view returns(bool);
@@ -689,10 +700,20 @@ abstract contract feeManager is Context {
     function getAccountsLength() external virtual view returns(uint256);
     function accountExists(address _account) external virtual view returns (bool);
     }
-
+abstract contract prevlaProtoStarManager is Context {
+    function getDeadStarsData(address _account, uint256 _x) external  virtual returns(string memory,uint256,uint256,uint256,uint256,uint256,uint256,bool,bool);
+    function protoAccountData(address _account, uint256 _x) external virtual returns(string memory,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256);
+    function protoAccountExists(address _account) external virtual returns (bool);
+    function getCollapseDate(address _account,uint256 _x) external virtual view returns(uint256);
+    function getdeadStarsLength(address _account) external virtual view returns(uint256);
+    function getProtoAccountsLength() external virtual view returns(uint256);
+    function getProtoAddress(uint256 _x) external virtual view returns(address);
+    function getProtoStarsLength(address _account) external virtual view returns(uint256);
+}
 abstract contract overseer is Context {
 	 function getMultiplier(uint256 _x) external virtual returns(uint256);
 	 function getBoostPerMin(uint256 _x) external virtual view returns(uint256);
+	 function getRewardsPerMin() external virtual view returns (uint256);
 	 function getCashoutRed(uint256 _x) external virtual view returns (uint256);
 	 function getNftTimes(address _account, uint256 _id,uint256 _x) external virtual view returns(uint256);
 	 function isStaked(address _account) internal virtual returns(bool);
@@ -705,9 +726,9 @@ abstract contract overseer is Context {
 } 
 abstract contract dropManager is Context {
 }
-contract boostManager is Ownable {
-    string public constant name = "NebulaProtoStarManager";
-    string public constant symbol = "PMGR";
+contract BoostManager is Ownable {
+    string public constant name = "BoostManager";
+    string public constant symbol = "BOST";
     using SafeMath for uint256;
     using SafeMath for uint;
     struct PROTOstars {
@@ -751,18 +772,18 @@ contract boostManager is Ownable {
     uint256 public one = 1;
     uint256 public protoLife = 500 days;
     uint256 public TimeInt = 24*60*60;
-    uint256[4] public RewardsPerSec = [0,0,0,0];
-    uint256[4] public RewardsPercentage = [0,0,0,0];
-    uint256[4] public cashoutRed = [0,0,0,0];
+    uint256[] public RewardsPerSec;
+    uint256[] public RewardsPercentage;
+    uint256[] public cashoutRed;
     uint256[] public times;
-    address _protoManager;
-    address _dropManager;
-    address _overseer;
-    address _feeManager;
-    address _updateManager;
-    address _NFTStake;
+    uint256 public rewardsPerMin;
+    address public _protoManager;
+    address public _dropManager;
+    address public _overseer;
+    address public _feeManager;
+    address public _updateManager;
     address payable treasury;
-    address public NeFiToken;
+    address public PutToken;
     address public feeToken;
     address public rewardsPool;
     address public teamPool;
@@ -770,19 +791,18 @@ contract boostManager is Ownable {
     uint256  One = 1;
     address public Guard;
     overseer over;
-    NFTStake NFTMGR;
+    protoManager protoMGR;
     feeManager feeMGR;
+    dropManager dropMGR;
+    PutUpdateManager updateMGR;
     IERC20 feeTok;
-    IERC20 NeFiTok;
+    IERC20 PutTok;
     modifier onlyGuard() {require(Guard == _msgSender() || _msgSender() == owner() || _msgSender() == _protoManager || _msgSender() == _dropManager || _msgSender() == _updateManager, "feeMGR_NOT_GUARD");_;}
     constructor() {
-	    over = overseer(0x762F3150d23cF564C8DF1880DBDb706e41858531);
-	    NFTMGR = NFTStake(0xAF21ddF00D2852794a7909820d47f8dEDb0b5779);
-	    for(uint i = 0;i<4;i++){
-	    	RewardsPerSec[i] = over.getBoostPerMin(uint256(i));
-	    	cashoutRed[i] = over.getCashoutRed(uint256(i));
-	    	RewardsPercentage[i] = over.getMultiplier(uint256(i));
-	    }
+	    over = overseer(0xdfd6Fa1d4EC0888480AA4aC21eC82e98b0f5708E);
+	    rewardsPerMin = over.getRewardsPerMin();
+
+	    	
     }
 //GetFromName-----------------------------------------------------------------------------------------------------------------------------------------------------------
 	function findFromName(address _account, string memory _name) internal view returns(uint256){
@@ -878,56 +898,56 @@ contract boostManager is Ownable {
     }
 //NFTCalcs--------------------------------------------------------------------------------------------------------------------------------------------------------------
 	 function getAllAmount(address _account) internal returns(uint256[4]  memory){
-	 	uint256[4] memory NFT3 = [Zero,Zero,Zero,Zero];
-	 	uint256[3] memory NFTs = NFTMGR.isStakedSpec(_account);
+	 	uint256[4] memory NFTs = [Zero,Zero,Zero,Zero];
 	 	for(uint i=0;i<3;i++){
-	 		NFT3[i] += NFTs[i];
-	 		NFT3[3] += NFTs[i].mul(5);
+	 		NFTs[i] = over.getNftAmount(_account,i+1);
+	 		NFTs[3] += NFTs[i].mul(5);
 	 	}
-	 	return NFT3;
 	 }
 	 function getTime(address _account,uint256 _id,uint256 _x) internal returns (uint256){
-		return NFTMGR.getTimes(_account,_id,_x);
+		return over.getNftTimes(_account,_id,_x);
 	 }
 	 function getProto(address _account,uint256[4] memory NFTCount,uint256[4] memory ogNFTs) internal returns (uint256[4] memory,uint256,uint256){
 		 uint j = 1;
+		 uint256[5] memory CurrNftTime;
 		 for(uint i=0;i<ogNFTs[3];i++){
 		 	while(NFTCount[j] == Zero && j <3){
 		 		j +=1;
 		 	}
 		 		NFTCount[j] -= 1;
 		 		return (NFTCount,getTime(_account,i,j),j);
+		 	
 		 }
 		 return (NFTCount,Zero,Zero);
 	 }
 	 function getCurrElapsedLifeDecrease(uint256 _elapsed,uint256 _id) internal returns(uint256){
-	 	return _elapsed.add(NeFiLib.sendPercentage(_elapsed,RewardsPercentage[_id]));
+	 	return _elapsed.add(PutLib.sendPercentage(_elapsed,RewardsPercentage[_id]));
 	 }
 	 function getCurrRewards(uint256 _elapsed,uint256 _id) internal returns(uint256){
 	 	return _elapsed.mul(RewardsPerSec[_id]);
 	 }
 	 function getElapsed(uint256 _time,uint256 totalDecrease,uint256 creationTime,uint256 CurrNftTime,uint256 lastClaim,uint256 _id) internal returns(uint256,uint256,uint256){
-	 	uint256 totalElapsed = NeFiLib.safeSubAbs(_time,creationTime);
+	 	uint256 totalElapsed = PutLib.safeSubAbs(_time,creationTime);
 	 	uint256 totalFullElapsed = totalElapsed.add(totalDecrease);
-	 	uint256 elapsedLeft = NeFiLib.safeSubAbs(totalFullElapsed,protoLife);
-	 	uint256 elapsed = NeFiLib.getLower(NeFiLib.safeSubAbs(_time,lastClaim),elapsedLeft);
-	 	uint256 regElapsed = NeFiLib.safeSubAbs(elapsed,NeFiLib.safeSubAbs(_time,CurrNftTime));
-	 	elapsedLeft = NeFiLib.safeSubAbs(elapsed,regElapsed);
-	 	uint256 nftElapsed = NeFiLib.safeDivs(elapsedLeft,getCurrElapsedLifeDecrease(uint256(1),_id));
+	 	uint256 elapsedLeft = PutLib.safeSubAbs(totalFullElapsed,protoLife);
+	 	uint256 elapsed = PutLib.getLower(PutLib.safeSubAbs(_time,lastClaim),elapsedLeft);
+	 	uint256 regElapsed = PutLib.safeSubAbs(elapsed,PutLib.safeSubAbs(_time,CurrNftTime));
+	 	elapsedLeft = PutLib.safeSubAbs(elapsed,regElapsed);
+	 	uint256 nftElapsed = PutLib.safeDivs(elapsedLeft,getCurrElapsedLifeDecrease(uint256(1),_id));
 	 	return (regElapsed,nftElapsed,totalElapsed);
 	}
 	function getPendingInfo(uint256 _time,address _account,uint256 _x,uint256 _id) internal returns(uint256){
 		ZeroPending(_account,_x);
 		PENDING[] storage  pends = pending[_account];
 	        PENDING storage  pend = pends[_x];
-	        totals[_account].blackHole = NeFiLib.safeSubAbs(totals[_account].blackHole,pend.blackHole);
-	        totals[_account].whiteHole = NeFiLib.safeSubAbs(totals[_account].whiteHole,pend.whiteHole);
+	        totals[_account].blackHole = PutLib.safeSubAbs(totals[_account].blackHole,pend.blackHole);
+	        totals[_account].whiteHole = PutLib.safeSubAbs(totals[_account].whiteHole,pend.whiteHole);
          	pend.calcTime = _time;
 	 	pend.regLifeDecrease = getCurrElapsedLifeDecrease(pend.regElapsed,0);
 	 	pend.boostLifeDecrease = getCurrElapsedLifeDecrease(pend.boostElapsed,_id);
-		pend.boostRewardsSec = NeFiLib.safeDivs(pend.whiteHole,pend.actualElapsed);
+		pend.boostRewardsSec = PutLib.safeDivs(pend.whiteHole,pend.actualElapsed);
 		pend.whiteHole = getCurrRewards(pend.regElapsed,0).add(getCurrRewards(pend.boostElapsed,_id));
-		pend.blackHole = NeFiLib.sendPercentage(pend.whiteHole,cashoutRed[_id]);
+		pend.blackHole = PutLib.sendPercentage(pend.whiteHole,cashoutRed[_id]);
 		totals[_account].blackHole += pend.blackHole;
 		totals[_account].whiteHole += pend.whiteHole;
 	}
@@ -942,7 +962,7 @@ contract boostManager is Ownable {
 		 	total.blackHole = Zero;
 		 	total.whiteHole = Zero;
 		 	(uint256[4] memory NFTCount,uint256 CurrNftTime,uint256 _id) = getProto(_account,NFTCount,ogNFTs);
-			 for(uint i = 0;i<NeFiLib.getLower(len.sub(j),5);i++){
+			 for(uint i = 0;i<PutLib.getLower(len.sub(j),5);i++){
 
 			 	getPendingInfo(_time,_account,j,_id);
 			 	NFTCount[3] -= 1;
@@ -971,7 +991,7 @@ contract boostManager is Ownable {
 			proto.regLifeDecrease += pend.regLifeDecrease;
 			proto.boostLifeDecrease += pend.boostLifeDecrease;
 			proto.whiteHole += pend.whiteHole;
-			proto.boostRewardsSec = NeFiLib.safeDivs(proto.whiteHole,pend.calcTime.sub(proto.creationTime));
+			proto.boostRewardsSec = PutLib.safeDivs(proto.whiteHole,pend.calcTime.sub(proto.creationTime));
 			proto.actualElapsed = proto.boostLifeDecrease.add(proto.regLifeDecrease);
 
 			ZeroPending(_account,j);
@@ -996,8 +1016,8 @@ contract boostManager is Ownable {
 	 
 //updateNums--------------------------------------------------------------------------------------------------
     function updateDailyRewards(uint256 _perc) external onlyOwner() {
-    	uint256 dailyNeFiPerProto =NeFiLib.sendPercentage(uint256(1),_perc); 
-    	uint256 _rewardsPersec = NeFiLib.sendPercentage(uint256(1)*(10**18)/(TimeInt),_perc);
+    	uint256 dailyPutPerProto =PutLib.sendPercentage(uint256(1),_perc); 
+    	uint256 _rewardsPersec = PutLib.sendPercentage(uint256(1)*(10**18)/(TimeInt),_perc);
     	updateNums();
     }
     function updateBoostRewards(uint256[3] memory _percs) external onlyOwner() {
@@ -1005,21 +1025,22 @@ contract boostManager is Ownable {
     	updateNums();
     }
     function updateCashoutRed(uint256[3] memory _percs) external onlyOwner() {
-    	uint256[4] memory cashoutRed = [uint256(0),_percs[0],NeFiLib.sendPercentage(_percs[1],95),NeFiLib.sendPercentage(_percs[2],90)];
+    	uint256[4] memory cashoutRed = [uint256(0),_percs[0],PutLib.sendPercentage(_percs[1],95),PutLib.sendPercentage(_percs[2],90)];
     	updateNums();
     }
     function updateNums() internal{
+    	uint256[4] memory RewardsPersec;
     	for(uint i=0;i<4;i++){
-    		RewardsPerSec[i] = RewardsPerSec[i].add(NeFiLib.sendPercentage(RewardsPerSec[i],RewardsPercentage[i]));
+    		RewardsPerSec[i] = rewardsPerMin.add(PutLib.sendPercentage(rewardsPerMin,RewardsPercentage[i]));
     	}
     }
 //changeWallets-----------------------------------------------------------------------------------------------
-    function updateNeFiToken(address _account) external onlyGuard(){
-    	INTupdateNeFiToken(_account);
+    function updatePutToken(address _account) external onlyGuard(){
+    	INTupdatePutToken(_account);
     }
-    function INTupdateNeFiToken(address _account) internal{
-    	NeFiToken = _account;
-    	NeFiTok = IERC20(NeFiToken); 
+    function INTupdatePutToken(address _account) internal{
+    	PutToken = _account;
+    	PutTok = IERC20(PutToken); 
     }
     function updateFeeToken(address _account) external onlyGuard(){
     	INTupdateFeeToken(_account);
@@ -1035,12 +1056,19 @@ contract boostManager is Ownable {
     	_overseer = _account;
     	over = overseer(_overseer); 
     }
-    function update_NFTStake(address _account) external onlyGuard(){
-    	INTupdate_NFTStake(_account);
+    function updateDropManager(address _account) external onlyGuard(){
+    	INTupdateDropManager(_account);
     }
-    function INTupdate_NFTStake(address _account) internal{
-    	_NFTStake = _account;
-    	NFTMGR = NFTStake(_NFTStake); 
+    function INTupdateDropManager(address _account) internal{
+    	_dropManager = _account;
+    	dropMGR = dropManager(_dropManager); 
+    }
+    function updateprotoManager(address _account) external onlyGuard(){
+    	INTupdateprotoManager(_account);
+    }
+    function INTupdateprotoManager(address _account) internal{
+    	_protoManager = _account;
+    	protoMGR = protoManager(_protoManager); 
     }
     function updateFeeManager(address _account) external onlyGuard(){
     	INTupdateFeeManager(_account);
