@@ -1,11 +1,3 @@
-// Sources flattened with hardhat v2.10.1 https://hardhat.org
-
-// File here/dex/rooteraid.sol
-
-/**
- *Submitted for verification at Etherscan.io on 2020-06-05
-*/
-
 pragma solidity =0.6.6;
 
 interface IUniswapV2Factory {
@@ -232,7 +224,7 @@ interface IWETH {
     function withdraw(uint) external;
 }
 
-contract router is IUniswapV2Router02 {
+contract Router is IUniswapV2Router02 {
     using SafeMath for uint;
 
     address public immutable override factory;
@@ -701,7 +693,7 @@ library UniswapV2Library {
                 hex'ff',
                 factory,
                 keccak256(abi.encodePacked(token0, token1)),
-                hex'202af95822b5bde250c618d02c807059c800377625b08e4528ff1b530e9f9f87' // init code hash
+                hex'e6ca8d7e47ef4cd74a491c8ce789a53678434a680b5516f2db9f67ecf0d13349' // init code hash
             ))));
     }
 
