@@ -1,4 +1,7 @@
-// SPDX-License-Identifier: MIT
+/**
+ *Submitted for verification at Etherscan.io on 2020-05-04
+*/
+
 pragma solidity =0.5.16;
 
 interface IUniswapV2Factory {
@@ -392,7 +395,7 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
     }
 }
 
-contract factory is IUniswapV2Factory {
+contract Factory is IUniswapV2Factory {
     bytes32 public constant INIT_CODE_PAIR_HASH = keccak256(abi.encodePacked(type(UniswapV2Pair).creationCode));
     address public feeTo;
     address public feeToSetter;
@@ -494,4 +497,3 @@ library UQ112x112 {
         z = x / uint224(y);
     }
 }
-
